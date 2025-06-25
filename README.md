@@ -44,18 +44,18 @@ The script relies heavily on external command-line tools. Here's what you need t
       # For conda:  
       conda create -n genomics python=3.9 fastqc trimmomatic bwa samtools bcftools  
       conda activate genomics  
-Install Java Runtime Environment:
-Needed for VarScan, snpEff, gemini.
-Example:
-bash
-sudo apt-get install default-jre  
-Download external tools manually if needed:
-VarScan: VarScan
-snpEff: snpEff
-gemini: gemini
-Environment variables:
-Ensure commands like wget, gunzip, fastqc, bwa, samtools, etc., are available in your system's PATH.
-How the Conversion Works
+## Install Java Runtime Environment:
+    - Needed for VarScan, snpEff, gemini.
+      # Example:
+        bash
+        sudo apt-get install default-jre  
+      # Download external tools manually if needed:
+        VarScan: VarScan
+        snpEff: snpEff
+        gemini: gemini
+        Environment variables:
+        Ensure commands like wget, gunzip, fastqc, bwa, samtools, etc., are available in your system's PATH.
+## How the Conversion Works
 1. Using subprocess
 Purpose: To execute shell commands exactly as they would run in a terminal.
 Why: Most bioinformatics tools are CLI-based, so subprocess allows us to run them from Python.
@@ -79,50 +79,50 @@ Wrapping commands in Python allows integration with error handling, logging, and
 ## Step-by-Step Explanation of the Script
 
 
-a. Directory Setup
+- Directory Setup
 Creates a structured workspace with raw_data, Fastqc_Reports, Mapping, and Variants.
 Ensures directories are present before file operations, preventing runtime errors.
-b. Downloading Data & References
+- Downloading Data & References
 Downloads raw FASTQ files and the reference genome from public repositories
-c. Downloading and Preparing Reference Genome
+- Downloading and Preparing Reference Genome
 Checks if the reference genome (hg19.chr5_12_17.fa.gz) exists.
 If absent, downloads using wget.
 Unzips the reference file with gunzip, preparing it for downstream processing.
 The reference unzipped path is used consistently across tools like BWA, samtools, etc.
-d. Quality Control with FastQC
+- Quality Control with FastQC
 Runs fastqc on each FASTQ file to generate quality reports.
 Reports are saved in the Fastqc_Reports/ directory.
 Providing feedback via print statements helps monitor progress and troubleshoot issues if quality issues are detected.
-e. Trimming with Trimmomatic
+- Trimming with Trimmomatic
 Reads are processed to remove adapters and low-quality bases.
 The outputs are new paired FASTQ files saved in the trimmed_reads/ directory.
 Post-trimming quality is checked again with FastQC.
-f. Mapping Reads
+- Mapping Reads
 Uses bwa mem to align reads to the reference genome.
 The read group (@RG) info is added for downstream analysis.
 Output SAM files are saved in the Mapping/ directory.
-g. Conversion, Sorting, and Indexing
+- Conversion, Sorting, and Indexing
 Converts SAM to BAM (samtools view).
 Sorts BAM files for efficient access (samtools sort).
 Indexes BAM files (samtools index) to enable quick random access.
 This step readies files for variant calling.
-h. BAM Filtering & Processing
+- BAM Filtering & Processing
 Filters BAM files to retain high-quality, properly paired reads (samtools view with -q, -f, -F).
 Optional: Remove duplicates using samtools markdup or similar tools.
 Uses additional tools like bamleftalign and bamtools for realignment and filtering—integrated via subprocess.
-i. Variant Calling
+- Variant Calling
 Generates pileup files with samtools mpileup.
 Calls somatic variants with VarScan (java -jar VarScan.v2.3.9.jar somatic).
 Outputs VCF files for snp and indel variants.
-j. Merging Variants
+- Merging Variants
 Compresses VCFs with bgzip.
 Indexes with tabix.
 Merges VCFs into a combined VCF with bcftools merge.
-k. Annotation with snpEff
+- Annotation with snpEff
 Downloads snpEff latest core database.
 Annotates the merged VCF file to add functional annotations.
 Output is a .ann.vcf file located in Variants/.
-l. Clinical Annotation with Gemini
+- Clinical Annotation with Gemini
 Downloads gemini install script.
 Loads annotated variants into gemini database (gemini load).
 Enables further clinical or genetic interpretation.
