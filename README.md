@@ -1,6 +1,6 @@
 # Genomic Data Analysis Pipeline (Python Version)
-Identification of somatic and germiline variants from tumor and normal samples
- Note: The bash script was added for comparism.
+Identification of somatic and germiline variants from tumor and normal samples.
+       Note: The bash script was added for comparism.
 
 ## Overview
 
