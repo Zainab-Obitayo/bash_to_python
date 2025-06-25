@@ -1,6 +1,6 @@
 # Genomic Data Analysis Pipeline (Python Version)
 Identification of somatic and germiline variants from tumor and normal samples
-# Note: The bash script was added for comparism.
+ Note: The bash script was added for comparism.
 
 ## Overview
 
@@ -76,7 +76,7 @@ Commands like wget, gunzip, are executed via subprocess.
 Pure bash scripts are less flexible and harder to debug programmatically.
 Wrapping commands in Python allows integration with error handling, logging, and potential extensions.
 
-# Step-by-Step Explanation of the Script
+## Step-by-Step Explanation of the Script
 
 
 a. Directory Setup
@@ -127,14 +127,14 @@ Downloads gemini install script.
 Loads annotated variants into gemini database (gemini load).
 Enables further clinical or genetic interpretation.
 Notable Design Choices
-# Use of Print Statements
+## Use of Print Statements
 Added throughout for tracking execution flow and debugging.
 Useful for long pipelines where steps may take hours; it helps identify which step is in progress or stuck.
-# Why use subprocess?
+## Why use subprocess?
 Provides close control over command execution.
 Enables capturing output, errors, and checking success (via check=True).
 Better than os.system() for robustness and error handling.
-# Use of pathlib
+## Use of pathlib
 Cross-platform file path management.
 Simplifies path manipulations (/ operator).
 Improves code readability and reduces bugs.
@@ -142,14 +142,14 @@ Downloading External Data
 Downloads datasets, reference genome, annotation tools.
 Checks if files exist to avoid redundant downloads.
 Ensures reproducibility and automation.
-# Why combine these tools?
+## Why combine these tools?
 Most bioinformatics workflows are command-line driven. Using Python allows automating, error checking, and integrating multiple commands seamlessly, making the entire pipeline reproducible and manageable.
 
-# Final Remarks
+## Final Remarks
 Adjust paths, URLs, and parameters to your environment and datasets.
 Install all external dependencies as specified.
 Run the script from a Linux environment with appropriate permissions.
 For Windows users, consider using WSL or adjusting commands accordingly.
 
-# Conclusion
+## Conclusion
 This Python script offers an automated, modular, and transparent way to perform complex genomic analyses. It provides clear instructions, progress updates, and control over each step—all while leveraging the powerful suite of command-line bioinformatics tools.
